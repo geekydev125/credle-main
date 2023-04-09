@@ -116,8 +116,8 @@ export const getKingBalance = async(address: string | undefined) => {
 const getAPY = (_totalLocked: string) => {
     // APY 
     const totalLocked = parseFloat(_totalLocked);
-    const rewardPerBlock = 0.3250
-    const blockPerSecond = 0.33
+    const rewardPerBlock = 0.0035
+    const blockPerSecond = 0.3333
     const apy = (((rewardPerBlock * blockPerSecond * 86400 * 365) / totalLocked) * 100).toFixed(2)
     return apy;
 }
