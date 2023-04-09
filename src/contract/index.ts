@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable no-console */
 
 import { ethers } from 'ethers';
@@ -48,7 +49,7 @@ export const isApproved = async (address: string | undefined) => {
 }
 
 export const tokenDeposit = async (amount: number) => {
-    const tx = await StakingWithSigner.deposit((amount * (10 ** 9)).toString());
+    const tx = await StakingWithSigner.deposit((amount * (10 ** 18)).toString());
     await tx.wait();
 }
 
@@ -58,7 +59,7 @@ export const compound = async () => {
 }
 
 export const withdraw = async (amount: number) => {
-    const tx = await StakingWithSigner.withdraw((amount * (10 ** 9)).toString());
+    const tx = await StakingWithSigner.withdraw((amount * (10 ** 18)).toString());
     await tx.wait();
 }
 
@@ -69,10 +70,10 @@ export const getFreeData = async () => {
     const StakingContract = new ethers.Contract(stakingAddy, contracts.King.abi, provider);
 
     const _totalLocked = await StakingContract.totalUsersStake();
-    const totalLocked = parseFloat(ethers.utils.formatUnits(_totalLocked.toString(), 9)).toFixed(4);
+    const totalLocked = parseFloat(ethers.utils.formatUnits(_totalLocked.toString(), 18)).toFixed(4);
 
     const _totalUserRewards = await StakingContract.totalUsersRewards();
-    const totalUserRewards = parseFloat(ethers.utils.formatUnits(_totalUserRewards.toString(), 9)).toFixed(4);
+    const totalUserRewards = parseFloat(ethers.utils.formatUnits(_totalUserRewards.toString(), 18)).toFixed(4);
 
     // get APY
     const apy = getAPY(totalLocked);
@@ -89,10 +90,10 @@ export const getUserData = async (address: string | undefined) => {
     if(Staking !== undefined && address !== undefined && signer !== undefined) {
         const userData:any = [];
         const userInfos = await Staking.userInfo(address);
-        const deposit = parseFloat(ethers.utils.formatUnits(userInfos[0].toString(), 9)).toFixed(4);
+        const deposit = parseFloat(ethers.utils.formatUnits(userInfos[0].toString(), 18)).toFixed(4);
         const lockTime = (parseInt(userInfos[2])).toString();
         
-        const _rewardDebt = ethers.utils.formatUnits(await Staking.pendingReward(address), 9)
+        const _rewardDebt = ethers.utils.formatUnits(await Staking.pendingReward(address), 18)
         const __rewardDebt = parseFloat(_rewardDebt);
         const rewardDebt = __rewardDebt.toFixed(4).toString();
 
@@ -122,8 +123,8 @@ const getAPY = (_totalLocked: string) => {
 }
 
 // const getKingPrice = async () => {
-//     const chainId = isTest ? 97 : 56;
-//     const response = await fetch(`https://api.dev.dex.guru/v1/chain/${chainId}/tokens/0x5439F019aac8F242a4e2f8367aD83a60E9dE834A/market?api-key=UnK0BOsJoU3FhwiWcoIuBzGQVT3j_dw_656de3zEAAs`)
+//     const chainId = 56;
+//     const response = await fetch(`https://api.dev.dex.guru/v1/chain/${chainId}/tokens/${stakingAddy}/market?api-key=UnK0BOsJoU3FhwiWcoIuBzGQVT3j_dw_656de3zEAAs`)
 //     const data = await response.json()
 //     const res = data.price_usd.toFixed(5);
 //     return res
