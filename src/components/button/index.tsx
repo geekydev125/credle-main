@@ -101,6 +101,5 @@ const AwesomeButtonContainer = styled.button`
   }
   @media screen and (max-width: 480px) {
     font-size: 10px;
-    padding: 0;
   }
 `;
