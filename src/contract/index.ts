@@ -16,7 +16,7 @@ let currencyContractWithSigner: any = null;
 let KingContract: any = null;
 
 const Addy = isTest ? contracts.King.testnet_address : contracts.King.address;
-const stakingAddy = contracts.King.staking;
+const stakingAddy = isTest ? contracts.King.testnet_staking : contracts.King.staking;
 
 export const initializeWeb3 = async (provider_: any, signer_: any) => {
     currencyContract = new ethers.Contract(Addy, erc20ABI, provider_);
@@ -31,7 +31,9 @@ export const initializeWeb3 = async (provider_: any, signer_: any) => {
 export const approve = async () => {
     if(signer !== null && signer !== undefined && currencyContractWithSigner !== null) {
         const max_allow = '115792089237316195423570985008687907853269984665640564039457584007913129639934'
-        const tx =  await currencyContractWithSigner.approve(contracts.King.staking, max_allow);
+        console.log("currencyContractWithSigner: ", currencyContractWithSigner)
+        const tx =  await currencyContractWithSigner.approve(stakingAddy, max_allow);
+        console.log("approved")
         await tx.wait();
     }
 }
@@ -62,7 +64,7 @@ export const withdraw = async (amount: number) => {
 
 export const getFreeData = async () => {
     const freeData = [];
-    const rpc = isTest ? "https://rpc-mumbai.maticvigil.com" : "https://bsc-dataseed1.binance.org";
+    const rpc = isTest ? "https://data-seed-prebsc-2-s2.binance.org:8545" : "https://bsc-dataseed1.binance.org";
     const provider = new ethers.providers.JsonRpcProvider(rpc);
     const StakingContract = new ethers.Contract(stakingAddy, contracts.King.abi, provider);
 
@@ -75,16 +77,16 @@ export const getFreeData = async () => {
     // get APY
     const apy = getAPY(totalLocked);
 
-    const kingPrice = await getKingPrice();
+    // const kingPrice = await getKingPrice();
 
-    const tvl = (Number(totalLocked) * kingPrice).toFixed(2);
+    // const tvl = (Number(totalLocked) * kingPrice).toFixed(2);
 
-    freeData.push(totalLocked, totalUserRewards, apy, kingPrice, tvl);
+    freeData.push(totalLocked, totalUserRewards, apy);
     return freeData;
 }
 
 export const getUserData = async (address: string | undefined) => {
-    if(Staking !== null && Staking !== undefined && address !== undefined && signer !== null && signer !== undefined) {
+    if(Staking !== undefined && address !== undefined && signer !== undefined) {
         const userData:any = [];
         const userInfos = await Staking.userInfo(address);
         const deposit = parseFloat(ethers.utils.formatUnits(userInfos[0].toString(), 9)).toFixed(4);
@@ -105,7 +107,7 @@ export const getUserData = async (address: string | undefined) => {
 export const getKingBalance = async(address: string | undefined) => {
     if(currencyContract !== null && currencyContract !== undefined && address !== undefined) {
         const _kingBalance = await currencyContract.balanceOf(address);
-        const kingBalance = parseFloat(ethers.utils.formatUnits(_kingBalance.toString(), 9)).toFixed(2);
+        const kingBalance = parseFloat(ethers.utils.formatUnits(_kingBalance.toString(), 18)).toFixed(2);
         return kingBalance
     }
 }
@@ -119,22 +121,10 @@ const getAPY = (_totalLocked: string) => {
     return apy;
 }
 
-const getKingPrice = async () => {
-    const chainId = isTest ? 97 : 56;
-    const response = await fetch(`https://api.dev.dex.guru/v1/chain/${chainId}/tokens/0x74f08aF7528Ffb751e3A435ddD779b5C4565e684/market?api-key=UnK0BOsJoU3FhwiWcoIuBzGQVT3j_dw_656de3zEAAs`)
-    const data = await response.json()
-    const res = data.price_usd.toFixed(5);
-    return res
-};
-
-export const getTotalSellFee = async () => {
-    if(KingContract !== null && KingContract !== undefined) {
-        console.log("getTotalSellFee :", KingContract)
-        const _sellFee = await KingContract.totalSellFee();
-        const _buyFee = await KingContract.totalBuyFee();
-        const sellFee = parseInt(_sellFee) / 10;
-        const buyFee = parseInt(_buyFee) / 10;
-        console.log({ sellFee, buyFee });
-        return { sellFee, buyFee };
-    }
-}
+// const getKingPrice = async () => {
+//     const chainId = isTest ? 97 : 56;
+//     const response = await fetch(`https://api.dev.dex.guru/v1/chain/${chainId}/tokens/0x5439F019aac8F242a4e2f8367aD83a60E9dE834A/market?api-key=UnK0BOsJoU3FhwiWcoIuBzGQVT3j_dw_656de3zEAAs`)
+//     const data = await response.json()
+//     const res = data.price_usd.toFixed(5);
+//     return res
+// };

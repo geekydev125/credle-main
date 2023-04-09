@@ -84,7 +84,7 @@ export const StakingPanel = () => {
 
   useEffect(() => {
     getData();
-    getKingPrice();
+    // getKingPrice();
   }, [isInitialized, isConnected, isLoad]);
 
   const handleTime = () => {

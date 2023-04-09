@@ -1,8 +1,9 @@
 {
   "King": {
-    "address": "0x74f08aF7528Ffb751e3A435ddD779b5C4565e684",
-    "testnet_address": "0x76b2fC4b6eDE2F27b75a62e800009A86F6721A8E",
-    "staking": "0x4d9f39f7Cb7c7444335077223cEeF33dbB58096F",
+    "address": "0x4d9f39f7Cb7c7444335077223cEeF33dbB58096F ",
+    "testnet_address": "0x5439F019aac8F242a4e2f8367aD83a60E9dE834A",
+    "staking": " ",
+    "testnet_staking": "0x27E32dF37D87F544B64EfCe7A0378919100c30Ea",
     "abi": [
       {
         "inputs": [
