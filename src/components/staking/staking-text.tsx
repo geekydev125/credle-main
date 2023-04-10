@@ -7,8 +7,7 @@ export const StakingText = () => {
         <p style={{ fontFamily: 'gotham-thin' }}>StaKing</p>
       </StakingTitle>
       <StakingMiniText>
-        <span style={{ fontFamily: 'gotham-thin' }}>The best way to</span>{' '}
-        <span style={{ fontFamily: 'gotham-bold' }}>earn King</span>
+        <span style={{ fontFamily: 'gotham-bold' }}>To earn COS</span>
       </StakingMiniText>
     </StakingTextContainer>
   );

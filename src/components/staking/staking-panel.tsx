@@ -215,7 +215,7 @@ export const StakingPanel = () => {
             </KingPanelAction>
           </KingPanel>
           <KingPanel>
-            <KingPanelTitle>Withdraw $King</KingPanelTitle>
+            <KingPanelTitle>Withdraw $COS</KingPanelTitle>
             <KingPanelAction>
               <KingPanelInput
                 type={'text'}

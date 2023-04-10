@@ -25,7 +25,7 @@ export const StakingStatus = () => {
           <StatusText title="User Rewards claimed" value={commaSeparators(freeData[1] ?? 0)} />
         </StakingStatusGroup1>
         <StakingStatusGroup2>
-          <StatusText title="KING price" value={`${commaSeparators(freeData[3] ?? 0)} $`} />
+          <StatusText title="COS price" value={`${commaSeparators(freeData[3] ?? 0)} $`} />
           <StatusText title="APY" value={`${commaSeparators(freeData[2] ?? 0)}%`} />
           <StatusText title="TVL" value={`${commaSeparators(freeData[4] ?? 0)} $`} />
           <StakingInfo onClick={() => setStakingModalOpen(true)}>
